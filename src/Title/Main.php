@@ -1,22 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Title;
 
-use pocketmine\plugin\PluginBase as P;
-use pocketmine\event\Listener as L;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
-use Title\Title;
-use pocketmine\utils\Config;
+use pocketmine\plugin\PluginBase;
 
-class Main extends P implements L{
+class Main extends PluginBase implements Listener{
 
-	public function onEnable(){
+    public function onEnable() : void{
         $this->saveDefaultConfig();
-		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-	}
-	public function onJoin(PlayerJoinEvent $e){
-		$player = $e->getPlayer();
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+    }
 
-		$this->getServer()->getScheduler()->scheduleDelayedTask(new Title($this, $player), 30);
-	}
+    public function onJoin(PlayerJoinEvent $event) : void{
+        $this->getServer()->getScheduler()->scheduleDelayedTask(new Title($this, $event->getPlayer()), 30);
+    }
 }
