@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Title;
 
 use Title\Main;
@@ -8,20 +10,20 @@ use pocketmine\Player;
 
 class Title extends PluginTask{
 
-	public function __construct(Main $main, Player $player){
+    private $player;
+    private $main;
 
-		parent::__construct($main, $player);
-		$this->main = $main;
-		$this->player = $player;
-	}
-	public function onRun($tick){
-        
+    public function __construct(Main $main, Player $player){
+        parent::__construct($main);
+        $this->main = $main;
+        $this->player = $player;
+    }
+
+    public function onRun(int $tick){
         $title = $this->main->getConfig()->get("Title");
         $title = str_replace("{player}", $this->player->getName(), $title);
-        
         $subtitle = $this->main->getConfig()->get("Subtitle");
         $subtitle = str_replace("{player}", $this->player->getName(), $subtitle);
-        
         $this->player->addTitle($title, $subtitle);
-	}
+    }
 }
